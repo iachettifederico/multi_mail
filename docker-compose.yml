@@ -1,0 +1,25 @@
+---
+version: "3.7"
+
+services:
+  web:
+    build:
+      context: .
+      target: development
+    command: "rerun --background -- bundle exec rackup --host=0.0.0.0"
+    tty: true
+    stdin_open: true
+    entrypoint: script/docker-entrypoint.sh
+    environment:
+      ENVIRONMENT: development
+      HISTFILE: /app/.zsh_history
+    ports:
+      - "9292:9292"
+    expose:
+      - 9292
+    volumes:
+      - .:/app
+      - bundler:/bundler
+
+volumes:
+  bundler:
