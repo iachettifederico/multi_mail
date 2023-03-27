@@ -1,1 +1,6 @@
+* Considerations
+
+- The web application assumes that if an email reached the server, it's a well formed email. If there's any kind of error I'll retrofit a fix for that.
+
 * Add a README
+

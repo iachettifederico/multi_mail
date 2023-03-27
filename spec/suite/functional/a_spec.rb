@@ -8,29 +8,35 @@ RSpec.describe "temporal email accounts" do
   it "does something" do
     server = environment.server
 
-    server.create_temporary_accounts("temp")
+    server.create_temporary_account_pattern("temp")
 
     server.receive!
 
     expect_false(server.received_emails?)
     expect(server.received_email_count).to eq(0)
+
+    expect_false(server.unreceived_emails?)
+    expect(server.unreceived_email_count).to eq(0)
   end
 
   it "something" do
     server = environment.server
 
-    server.create_temporary_accounts("temp")
+    server.create_temporary_account_pattern("temp")
 
     server.receive!([email_factory.to_temp, email_factory.to_temp])
 
     expect_true(server.received_emails?)
     expect(server.received_email_count).to eq(2)
+
+    expect_false(server.unreceived_emails?)
+    expect(server.unreceived_email_count).to eq(0)
   end
 
   it "something" do
     server = environment.server
 
-    server.create_temporary_accounts("temp")
+    server.create_temporary_account_pattern("temp")
 
     server.receive!([email_factory.to_temp, email_factory.to_temp])
     server.receive!([email_factory.to_temp])
@@ -42,7 +48,7 @@ RSpec.describe "temporal email accounts" do
   it "something" do
     server = environment.server
 
-    server.create_temporary_accounts("temp")
+    server.create_temporary_account_pattern("temp1")
 
     server.receive!([email_factory.to_temp(1)])
 
@@ -55,5 +61,22 @@ RSpec.describe "temporal email accounts" do
     expect_true(server.received_emails_for?("temp1"))
     expect(server.received_email_count_for("temp1")).to eq(1)
   end
+
+  it "has unreceived emails if an account haven't been set" do
+    server = environment.server
+
+    server.receive!([email_factory.to_temp, email_factory.to_temp])
+
+    expect_false(server.received_emails?)
+    expect(server.received_email_count).to eq(0)
+
+    expect_true(server.unreceived_emails?)
+    expect(server.unreceived_email_count).to eq(2)
+  end
+
+  # TODO: wildcards
+  # TODO: fetching all emails
+  # TODO: fetching emails for account
+  # TODO: reading email content
 
 end
