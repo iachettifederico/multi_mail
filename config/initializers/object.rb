@@ -4,7 +4,7 @@ class Object
       instance_variable_get("@#{attr}").count
     end
 
-    define_method("has_#{attr}?") do
+    define_method("#{attr}?") do
       public_send("#{attr}_count").positive?
     end
   end

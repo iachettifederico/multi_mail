@@ -14,4 +14,4 @@ end
 
 APPLICATION_LOADER.setup
 
-APPLICATION_LOADER.eager_load
+# APPLICATION_LOADER.eager_load

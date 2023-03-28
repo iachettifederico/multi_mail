@@ -12,10 +12,10 @@ RSpec.describe "pattern email accounts" do
 
     server.receive!
 
-    expect(server.received_email_count).to eq(0)
+    expect(server.received_emails_count).to eq(0)
     expect_false(server.received_emails?)
 
-    expect(server.unreceived_email_count).to eq(0)
+    expect(server.unreceived_emails_count).to eq(0)
     expect_false(server.unreceived_emails?)
   end
 
@@ -26,11 +26,11 @@ RSpec.describe "pattern email accounts" do
 
     server.receive!([email_factory.to_temp, email_factory.to_temp])
 
+    expect(server.received_emails_count).to eq(2)
     expect_true(server.received_emails?)
-    expect(server.received_email_count).to eq(2)
 
+    expect(server.unreceived_emails_count).to eq(0)
     expect_false(server.unreceived_emails?)
-    expect(server.unreceived_email_count).to eq(0)
   end
 
   it "it adds new emails to the list if it receives at separate times" do
@@ -41,8 +41,8 @@ RSpec.describe "pattern email accounts" do
     server.receive!([email_factory.to_temp, email_factory.to_temp])
     server.receive!([email_factory.to_temp])
 
+    expect(server.received_emails_count).to eq(3)
     expect_true(server.received_emails?)
-    expect(server.received_email_count).to eq(3)
   end
 
   it "can unreceive emails sent to an nonexistent account" do
@@ -52,13 +52,13 @@ RSpec.describe "pattern email accounts" do
 
     server.receive!([email_factory.to_temp(1)])
 
-    expect(server.received_email_count).to eq(1)
+    expect(server.received_emails_count).to eq(1)
     expect_true(server.received_emails?)
 
-    expect(server.received_email_count_for_account("temp")).to eq(0)
+    expect(server.received_emails_count_for_account("temp")).to eq(0)
     expect_false(server.received_emails_for_account?("temp"))
 
-    expect(server.received_email_count_for_account("temp1")).to eq(1)
+    expect(server.received_emails_count_for_account("temp1")).to eq(1)
     expect_true(server.received_emails_for_account?("temp1"))
   end
 
@@ -68,10 +68,10 @@ RSpec.describe "pattern email accounts" do
     server.receive!([email_factory.to_temp, email_factory.to_temp])
 
     expect_false(server.received_emails?)
-    expect(server.received_email_count).to eq(0)
+    expect(server.received_emails_count).to eq(0)
 
     expect_true(server.unreceived_emails?)
-    expect(server.unreceived_email_count).to eq(2)
+    expect(server.unreceived_emails_count).to eq(2)
   end
 
   # TODO: wildcards
