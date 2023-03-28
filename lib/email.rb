@@ -1,6 +1,4 @@
 class Email
-  attr_reader :recipient_account
-
   def self.from_attributes(to:, from:, subject:, body:)
     new(to: to)
   end
@@ -9,16 +7,19 @@ class Email
     raise NotImplemented
   end
 
+  def recipient_account
+    recipient_email.account
+  end
+  
+  def recipient_account?(account)
+    @recipient_email.account == account
+  end
+
   private
 
   attr_reader :recipient_email
 
   def initialize(to:)
-    @recipient_email = to
-    @recipient_account = account_from(recipient_email)
-  end
-
-  def account_from(a_recipient_email)
-    a_recipient_email[/(.+)@.+/, 1]
+    @recipient_email = EmailAddress[to]
   end
 end

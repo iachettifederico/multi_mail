@@ -4,7 +4,7 @@ class EmailServer
   end
 
   def create_temporary_account_pattern(pattern)
-    @account_group << AccountPattern.for(pattern)
+    @account_group << pattern
   end
 
   def receive!(emails=[])
@@ -28,14 +28,12 @@ class EmailServer
     unreceived_emails.count
   end
 
-  def received_emails_for?(account)
-    !received_email_count_for(account).zero?
+  def received_emails_for_account?(account)
+    !received_email_count_for_account(account).zero?
   end
 
-  def received_email_count_for(searched_account)
-    received_emails.count { |email|
-      email.recipient_account == searched_account
-    }
+  def received_email_count_for_account(searched_account)
+    received_emails.count_for_account(searched_account)
   end
 
   private
@@ -45,8 +43,8 @@ class EmailServer
   attr_reader :account_group
 
   def initialize
-    @received_emails = []
-    @unreceived_emails = []
+    @received_emails   = EmailList[]
+    @unreceived_emails = EmailList[]
     @account_group = AccountGroup.new
   end
 end

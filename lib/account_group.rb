@@ -5,14 +5,14 @@ class AccountGroup
   end
 
   def <<(account_pattern)
-    @account_patterns << account_pattern
+    @account_patterns << AccountPattern.for(account_pattern)
   end
 
   def received_emails_from(emails)
     response = []
     emails.each do |email|
       account_patterns.each do |account_pattern|
-        response << email if email.recipient_account == account_pattern
+        response << email if account_pattern.match?(email.recipient_account)
       end
     end
 
