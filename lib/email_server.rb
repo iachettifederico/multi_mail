@@ -30,8 +30,8 @@ class EmailServer
   attr_reader :account_group
 
   def initialize
-    @received_emails   = EmailList[]
-    @unreceived_emails = EmailList[]
+    @received_emails   = EmailSet[]
+    @unreceived_emails = EmailSet[]
     @account_group = AccountGroup.new
   end
 end

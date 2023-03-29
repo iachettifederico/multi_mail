@@ -1,4 +1,4 @@
-class EmailList
+class EmailSet
   def self.[]
     new
   end
