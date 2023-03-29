@@ -147,8 +147,22 @@ RSpec.describe "pattern email accounts" do
     expect_true(server.received_emails_for_account?("abctotodef"))
   end
 
+  it "can use a multiple-character prefix and suffix wildcard" do
+    server = environment.server
 
-  
+    server.create_account_pattern("*x*x*")
+
+    server.receive!([email_factory.email_to("aaxbbxcc")])
+
+    expect(server.received_emails_count).to eq(1)
+    expect_true(server.received_emails?)
+
+    expect(server.received_emails_count_for_account("aaxbbxcc")).to eq(1)
+    expect_true(server.received_emails_for_account?("aaxbbxcc"))
+  end
+
+
+
   # *temp
   # *temp*
 
