@@ -9,14 +9,10 @@ class AccountGroup
   end
 
   def received_emails_from(emails)
-    response = []
-    emails.each do |email|
-      account_patterns.each do |account_pattern|
-        response << email if account_pattern.match?(email.recipient_account)
-      end
-    end
 
-    response
+    account_patterns.flat_map do |account_pattern|
+      account_pattern.matched_emails_from(emails)
+    end
   end
 
   def unreceived_emails_from(emails)

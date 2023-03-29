@@ -8,7 +8,7 @@ RSpec.describe "pattern email accounts" do
   it "doesn't break if there are no emails" do
     server = environment.server
 
-    server.create_temporary_account_pattern("temp")
+    server.create_temporary_account_pattern("pepe")
 
     server.receive!
 
@@ -22,9 +22,23 @@ RSpec.describe "pattern email accounts" do
   it "can receive emails for an account" do
     server = environment.server
 
-    server.create_temporary_account_pattern("temp")
+    server.create_temporary_account_pattern("pepe")
 
-    server.receive!([email_factory.to_temp, email_factory.to_temp])
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe])
+
+    expect(server.received_emails_count).to eq(2)
+    expect_true(server.received_emails?)
+
+    expect(server.unreceived_emails_count).to eq(0)
+    expect_false(server.unreceived_emails?)
+  end
+
+  it "is case insensitive" do
+    server = environment.server
+
+    server.create_temporary_account_pattern("PepE")
+
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe])
 
     expect(server.received_emails_count).to eq(2)
     expect_true(server.received_emails?)
@@ -36,10 +50,10 @@ RSpec.describe "pattern email accounts" do
   it "it adds new emails to the list if it receives at separate times" do
     server = environment.server
 
-    server.create_temporary_account_pattern("temp")
+    server.create_temporary_account_pattern("pepe")
 
-    server.receive!([email_factory.to_temp, email_factory.to_temp])
-    server.receive!([email_factory.to_temp])
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe])
+    server.receive!([email_factory.to_pepe])
 
     expect(server.received_emails_count).to eq(3)
     expect_true(server.received_emails?)
@@ -48,31 +62,54 @@ RSpec.describe "pattern email accounts" do
   it "can unreceive emails sent to an nonexistent account" do
     server = environment.server
 
-    server.create_temporary_account_pattern("temp1")
+    server.create_temporary_account_pattern("pepe1")
 
-    server.receive!([email_factory.to_temp(1)])
+    server.receive!([email_factory.to_pepe(1)])
 
     expect(server.received_emails_count).to eq(1)
     expect_true(server.received_emails?)
 
-    expect(server.received_emails_count_for_account("temp")).to eq(0)
-    expect_false(server.received_emails_for_account?("temp"))
+    expect(server.received_emails_count_for_account("pepe")).to eq(0)
+    expect_false(server.received_emails_for_account?("pepe"))
 
-    expect(server.received_emails_count_for_account("temp1")).to eq(1)
-    expect_true(server.received_emails_for_account?("temp1"))
+    expect(server.received_emails_count_for_account("pepe1")).to eq(1)
+    expect_true(server.received_emails_for_account?("pepe1"))
   end
 
   it "has unreceived emails if an account haven't been set" do
     server = environment.server
 
-    server.receive!([email_factory.to_temp, email_factory.to_temp])
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe])
 
-    expect_false(server.received_emails?)
     expect(server.received_emails_count).to eq(0)
+    expect_false(server.received_emails?)
 
-    expect_true(server.unreceived_emails?)
     expect(server.unreceived_emails_count).to eq(2)
+    expect_true(server.unreceived_emails?)
   end
+
+  it "" do
+    server = environment.server
+
+    server.create_temporary_account_pattern("pepe*")
+
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe(1)])
+
+    expect(server.received_emails_count).to eq(2)
+    expect_true(server.received_emails?)
+
+    expect(server.received_emails_count_for_account("pepe")).to eq(1)
+    expect_true(server.received_emails_for_account?("pepe"))
+
+    expect(server.received_emails_count_for_account("pepe1")).to eq(1)
+    expect_true(server.received_emails_for_account?("pepe1"))
+
+    expect(server.unreceived_emails_count).to eq(0)
+    expect_false(server.unreceived_emails?)
+  end
+
+  # *temp
+  # *temp*
 
   # TODO: wildcards
   # TODO: fetching all emails

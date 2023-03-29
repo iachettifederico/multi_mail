@@ -3,8 +3,10 @@ class AccountPattern
     new(pattern: pattern)
   end
 
-  def match?(account)
-    pattern == account
+  def matched_emails_from(emails)
+    emails.select { |email|
+      match?(email)
+    }
   end
 
   private
@@ -14,4 +16,13 @@ class AccountPattern
   def initialize(pattern:)
     @pattern = pattern
   end
+
+  def match?(email)
+    regex =~ email.recipient_account
+  end
+
+  def regex
+    Regexp.new(pattern.gsub("*", ".?"), Regexp::IGNORECASE)
+  end
+
 end
