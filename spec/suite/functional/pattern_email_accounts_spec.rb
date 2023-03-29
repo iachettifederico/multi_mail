@@ -8,7 +8,7 @@ RSpec.describe "pattern email accounts" do
   it "doesn't break if there are no emails" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe")
+    server.create_account_pattern("pepe")
 
     server.receive!
 
@@ -22,7 +22,7 @@ RSpec.describe "pattern email accounts" do
   it "can receive emails for an account" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe")
+    server.create_account_pattern("pepe")
 
     server.receive!([email_factory.to_pepe, email_factory.to_pepe])
 
@@ -36,7 +36,7 @@ RSpec.describe "pattern email accounts" do
   it "is case insensitive" do
     server = environment.server
 
-    server.create_temporary_account_pattern("PepE")
+    server.create_account_pattern("PepE")
 
     server.receive!([email_factory.to_pepe, email_factory.to_pepe])
 
@@ -50,7 +50,7 @@ RSpec.describe "pattern email accounts" do
   it "it adds new emails to the list if it receives at separate times" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe")
+    server.create_account_pattern("pepe")
 
     server.receive!([email_factory.to_pepe, email_factory.to_pepe])
     server.receive!([email_factory.to_pepe])
@@ -62,7 +62,7 @@ RSpec.describe "pattern email accounts" do
   it "can unreceive emails sent to an nonexistent account" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe1")
+    server.create_account_pattern("pepe1")
 
     server.receive!([email_factory.to_pepe(suffix: 1)])
 
@@ -91,7 +91,7 @@ RSpec.describe "pattern email accounts" do
   it "can use a one-character suffix wildcard" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe*")
+    server.create_account_pattern("pepe*")
 
     server.receive!([email_factory.to_pepe, email_factory.to_pepe(suffix: 1)])
 
@@ -111,7 +111,7 @@ RSpec.describe "pattern email accounts" do
   it "can use a multiple-character suffix wildcard" do
     server = environment.server
 
-    server.create_temporary_account_pattern("pepe*")
+    server.create_account_pattern("pepe*")
 
     server.receive!([email_factory.to_pepe(suffix: "abc")])
 
@@ -119,10 +119,10 @@ RSpec.describe "pattern email accounts" do
     expect_true(server.received_emails_for_account?("pepeabc"))
   end
 
-  it "can use a one-character prefix wildcard" do
+  it "can use a multiple-character prefix wildcard" do
     server = environment.server
 
-    server.create_temporary_account_pattern("*pepe")
+    server.create_account_pattern("*pepe")
 
     server.receive!([email_factory.to_pepe(prefix: "abc")])
 
@@ -132,6 +132,21 @@ RSpec.describe "pattern email accounts" do
     expect(server.received_emails_count_for_account("abcpepe")).to eq(1)
     expect_true(server.received_emails_for_account?("abcpepe"))
   end
+
+  it "can use a multiple-character prefix and suffix wildcard" do
+    server = environment.server
+
+    server.create_account_pattern("*toto*")
+
+    server.receive!([email_factory.to_toto(prefix: "abc", suffix: "def")])
+
+    expect(server.received_emails_count).to eq(1)
+    expect_true(server.received_emails?)
+
+    expect(server.received_emails_count_for_account("abctotodef")).to eq(1)
+    expect_true(server.received_emails_for_account?("abctotodef"))
+  end
+
 
   
   # *temp

@@ -3,7 +3,7 @@ class EmailServer
     new
   end
 
-  def create_temporary_account_pattern(pattern)
+  def create_account_pattern(pattern)
     @account_group << pattern
   end
 
