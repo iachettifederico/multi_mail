@@ -123,13 +123,6 @@ RSpec.describe "pattern email accounts" do
     expect_true(server.received_emails_for_account?("aaxbbxcc"))
   end
 
-  it "does something" do
-    server.receive!([email_factory.to_pepe, email_factory.to_toto])
-
-    expect(server).to boolean_count(2, :unreceived_emails)
-  end
-
-  # TODO: wildcards
   # TODO: fetching all emails
   # TODO: fetching emails for account
   # TODO: reading email content
