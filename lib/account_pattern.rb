@@ -22,7 +22,13 @@ class AccountPattern
   end
 
   def regex
-    Regexp.new(pattern.gsub("*", ".?"), Regexp::IGNORECASE)
+    regex_string = [
+      '\A',
+      pattern.gsub("*", ".*"),
+      '\Z',
+    ].join
+
+    Regexp.new(regex_string, Regexp::IGNORECASE)
   end
 
 end

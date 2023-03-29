@@ -10,7 +10,7 @@ class Email
   def recipient_account
     recipient_email.account
   end
-  
+
   def recipient_account?(account)
     @recipient_email.account == account
   end

@@ -64,7 +64,7 @@ RSpec.describe "pattern email accounts" do
 
     server.create_temporary_account_pattern("pepe1")
 
-    server.receive!([email_factory.to_pepe(1)])
+    server.receive!([email_factory.to_pepe(suffix: 1)])
 
     expect(server.received_emails_count).to eq(1)
     expect_true(server.received_emails?)
@@ -88,12 +88,12 @@ RSpec.describe "pattern email accounts" do
     expect_true(server.unreceived_emails?)
   end
 
-  it "" do
+  it "can use a one-character suffix wildcard" do
     server = environment.server
 
     server.create_temporary_account_pattern("pepe*")
 
-    server.receive!([email_factory.to_pepe, email_factory.to_pepe(1)])
+    server.receive!([email_factory.to_pepe, email_factory.to_pepe(suffix: 1)])
 
     expect(server.received_emails_count).to eq(2)
     expect_true(server.received_emails?)
@@ -108,6 +108,32 @@ RSpec.describe "pattern email accounts" do
     expect_false(server.unreceived_emails?)
   end
 
+  it "can use a multiple-character suffix wildcard" do
+    server = environment.server
+
+    server.create_temporary_account_pattern("pepe*")
+
+    server.receive!([email_factory.to_pepe(suffix: "abc")])
+
+    expect(server.received_emails_count_for_account("pepeabc")).to eq(1)
+    expect_true(server.received_emails_for_account?("pepeabc"))
+  end
+
+  it "can use a one-character prefix wildcard" do
+    server = environment.server
+
+    server.create_temporary_account_pattern("*pepe")
+
+    server.receive!([email_factory.to_pepe(prefix: "abc")])
+
+    expect(server.received_emails_count).to eq(1)
+    expect_true(server.received_emails?)
+
+    expect(server.received_emails_count_for_account("abcpepe")).to eq(1)
+    expect_true(server.received_emails_for_account?("abcpepe"))
+  end
+
+  
   # *temp
   # *temp*
 

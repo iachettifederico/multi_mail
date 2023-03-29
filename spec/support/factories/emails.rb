@@ -1,17 +1,17 @@
 module Factory
   class Emails
-    def to_pepe(suffix="")
+    def to_pepe(suffix: "", prefix: "")
       Email.from_attributes(
-        to:      "pepe#{suffix}@example.com",
+        to:      "#{prefix}pepe#{suffix}@example.com",
         from:    "external@test.com",
         subject: "Email Subject",
         body:    "Email Body",
       )
     end
 
-    def to_toto(suffix="")
+    def to_toto(suffix: "", prefix: "")
       Email.from_attributes(
-        to:      "toto#{suffix}@example.com",
+        to:      "#{prefix}toto#{suffix}@example.com",
         from:    "external@test.com",
         subject: "Email Subject",
         body:    "Email Body",
