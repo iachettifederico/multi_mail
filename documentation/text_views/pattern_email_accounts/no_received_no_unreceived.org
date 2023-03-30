@@ -1,0 +1,15 @@
+* MultiMail
+
+** No Received emails
+
+** No Unreceived emails
+
+Received Emails:
+  #1
+  To:      pepe@example.com
+  From:    external@test.com
+  Subject: Email for pepe
+  #2
+  To:      toto@example.com
+  From:    external@test.com
+  Subject: Email for toto

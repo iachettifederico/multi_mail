@@ -4,8 +4,8 @@ module Factory
       Email.from_attributes(
         to:      "#{prefix}#{account}#{suffix}@example.com",
         from:    "external@test.com",
-        subject: "Email Subject for #{account}",
-        body:    "Email Body for #{account}",
+        subject: "Email for #{account}",
+        body:    "Email Body",
       )
     end
 

@@ -11,25 +11,49 @@ RSpec.describe "pattern email accounts" do
 
     server.receive!
 
-    expected_view = <<~PLAIN
+    expected_received_view = <<~PLAIN
       Received Emails:
         Empty
-      Unreceived Emails:
-        Empty
     PLAIN
-    
-    # expect(server).to boolean_count(0, :received_emails)
-    # expect(server).to boolean_count(0, :unreceived_emails)
+
+    expect(server.render_received_emails).to eq(expected_received_view)
   end
 
-  # it "can receive emails for an account" do
-  #   server.create_account_pattern("pepe")
+  it "can receive an email for an account" do
+    server.create_account_pattern("pepe")
 
-  #   server.receive!([email_factory.to_pepe, email_factory.to_pepe])
+    server.receive!([email_factory.to_pepe])
 
-  #   expect(server).to boolean_count(2, :received_emails)
-  #   expect(server).to boolean_count(0, :unreceived_emails)
-  # end
+    expected_received_view = <<~PLAIN
+      Received Emails:
+        #1
+        To:      pepe@example.com
+        From:    external@test.com
+        Subject: Email for pepe
+    PLAIN
+
+    expect(server.render_received_emails).to eq(expected_received_view)
+  end
+
+  xit "can receive emails for an account" do
+    server.create_account_pattern("pepe")
+
+    server.receive!([email_factory.to_pepe, email_factory.to_toto])
+
+    expected_received_view = <<~PLAIN
+      Received Emails:
+        #1
+        To:      pepe@example.com
+        From:    external@test.com
+        Subject: Email for pepe
+        #2
+        To:      toto@example.com
+        From:    external@test.com
+        Subject: Email for toto
+    PLAIN
+
+    expect(server.render_received_emails).to eq(expected_received_view)
+  end
 
   # it "is case insensitive" do
   #   server.create_account_pattern("PepE")
@@ -130,6 +154,7 @@ RSpec.describe "pattern email accounts" do
   #   expect_true(server.received_emails_for_account?("aaxbbxcc"))
   # end
 
+  # TODO: Test unreceived some more
   # TODO: fetching all emails
   # TODO: fetching emails for account
   # TODO: reading email content
