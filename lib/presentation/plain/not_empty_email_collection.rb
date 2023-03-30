@@ -5,7 +5,7 @@ module Presentation
       def self.for?(collection)
         !collection.empty?
       end
-      
+
       def render
         <<~PLAIN
           Received Emails:
