@@ -3,8 +3,9 @@ class EmailsRepository
     new
   end
 
-  def add_email(from:, to:)
-    @emails.unshift(Email.new(from: from, to: to))
+  def add_email(from:, to:, date:)
+    @emails << Email.new(from: from, to: to, date: date)
+    @emails = @emails.sort_by { |email| -email.date.to_i }
   end
 
   def all

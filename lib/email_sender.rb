@@ -3,8 +3,8 @@ class EmailSender
     new(emails_repository: emails_repository)
   end
 
-  def send_email(to:, from:)
-    emails_repository.add_email(to: to, from: from)
+  def send_email(to:, from:, date: Time.now)
+    emails_repository.add_email(to: to, from: from, date: date)
   end
 
   private
