@@ -15,13 +15,16 @@ Dir.chdir(WEB_APP) do
       require file
     end
 
-    route do |r|
+    environment = Environment.current
 
+    route do |r|
       puts "  >>>>> #{__FILE__}:#{__LINE__}".purple
       ap(params: r.params)
       puts "  >>>>> #{__FILE__}:#{__LINE__}".purple
 
-      r.hash_branches
+      r.is "received_emails" do
+        environment.received_emails.display
+      end
     end
   end
 end

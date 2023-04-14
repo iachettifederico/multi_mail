@@ -12,6 +12,10 @@ class EmailsRepository
     @emails
   end
 
+  def each(&block)
+    @emails.each(&block)
+  end
+
   private
 
   def initialize

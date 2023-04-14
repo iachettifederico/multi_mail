@@ -7,8 +7,6 @@ RSpec.describe "email reception" do
   it "doesn't break if there are no emails" do
     email_receiver = environment.email_receiver
 
-    email_receiver.receive!
-
     expect(email_receiver).to boolean_count(0, :received_emails)
   end
 
@@ -19,8 +17,6 @@ RSpec.describe "email reception" do
       to:   "account@example.com",
       from: "account@test.com",
     )
-
-    email_receiver.receive!
 
     received_email = email_receiver.received_emails.first
     expect(email_receiver).to boolean_count(1, :received_emails)
@@ -46,8 +42,6 @@ RSpec.describe "email reception" do
       from: "account@test.com",
       date: now + 1,
     )
-
-    email_receiver.receive!
 
     received_email_dates = email_receiver.received_emails.map(&:date)
     expect(email_receiver).to boolean_count(3, :received_emails)

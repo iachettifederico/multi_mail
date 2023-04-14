@@ -1,4 +1,6 @@
 class Email
+  attr_reader :sender_address
+  attr_reader :receiver_address
   attr_reader :date
 
   def self.with(from:, to:, date:)
@@ -14,9 +16,6 @@ class Email
   end
 
   private
-
-  attr_reader :sender_address
-  attr_reader :receiver_address
 
   def initialize(from:, to:, date:)
     @sender_address   = from

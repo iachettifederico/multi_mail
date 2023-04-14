@@ -3,14 +3,15 @@ class EmailReceiver
     new(emails_repository: emails_repository)
   end
 
-  def receive!
-  end
-
   def received_emails
     emails_repository.all
   end
 
   boolean_count :received_emails
+
+  def each(&block)
+    emails_repository.each(&block)
+  end
 
   private
 
