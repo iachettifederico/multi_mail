@@ -19,7 +19,7 @@ module Renderer
             }
           else
             div {
-              p { "Empty" }
+              span { "Empty" }
             }
           end
         }

@@ -18,7 +18,7 @@ RSpec.describe "email reception" do
     expect(rendered).to have_tag("div", with: { id: "received-emails" }) do
       with_tag("h2", text: "Received Emails")
       with_tag("div") do
-        with_tag("p", text: "Empty")
+        with_tag("span", text: "Empty")
       end
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe "email reception" do
 
     rendered = received_emails.display
 
-    expect(rendered).not_to have_tag("div#received-emails > div > p", text: "Empty")
+    expect(rendered).not_to have_tag("div#received-emails > div > span", text: "Empty")
 
     expect(rendered).to have_tag("div", with: { id: "received-emails" }) do
       with_tag("h2", text: "Received Emails")
