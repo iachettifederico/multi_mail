@@ -1,4 +1,6 @@
 class EmailReceiver
+  include Enumerable
+
   def self.load(emails_repository:)
     new(emails_repository: emails_repository)
   end

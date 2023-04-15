@@ -17,10 +17,11 @@ module Renderer
                 span { "#{email.sender_address} -> #{email.receiver_address}" }
               end
             }
+            render Renderer::Html::EmailCollection
+              .for(received_emails)
           else
-            div {
-              p { "Empty" }
-            }
+            render Renderer::Html::EmailCollection
+              .for(received_emails)
           end
         }
       end

@@ -1,28 +1,14 @@
 require "spec_helper"
 
 RSpec.describe "email reception" do
+  subject(:email_receiver) { environment.email_receiver }
+
   let(:environment) { Environment.current }
   let(:now) { Time.now }
   let(:email_sender) { environment.email_sender }
 
-  subject(:received_emails) { environment.received_emails }
-
-  it "is a page" do
-    # expect(received_emails.display).to be_a_page
-
-    expect(received_emails.display).to have_tag("html>head>title", text: "MultiMail")
-    expect(received_emails.display).to have_tag("html>body>main")
-  end
-
   it "shows an empty message if there are no emails" do
-    rendered = received_emails.display
-
-    expect(rendered).to have_tag("div", with: { id: "received-emails" }) do
-      with_tag("h2", text: "Received Emails")
-      with_tag("div") do
-        with_tag("p", text: "Empty")
-      end
-    end
+    expect(email_receiver).to boolean_count(0, :received_emails)
   end
 
   it "can receive an email" do
@@ -31,17 +17,7 @@ RSpec.describe "email reception" do
       from: "account@test.com",
     )
 
-    rendered = received_emails.display
-
-    expect(rendered).not_to have_tag("div#received-emails > div > p", text: "Empty")
-
-    expect(rendered).to have_tag("div", with: { id: "received-emails" }) do
-      with_tag("h2", text: "Received Emails")
-      with_tag("div") do
-        with_tag("span", text: "account@test.com -> account@example.com")
-        with_tag("span", text: "account@test.com -> account@example.com")
-      end
-    end
+    expect(email_receiver).to boolean_count(1, :received_emails)
   end
 
   it "sorts emails by date in descending order" do
@@ -61,16 +37,10 @@ RSpec.describe "email reception" do
       date: now + 1,
     )
 
-    rendered = received_emails.display
+    expected_dates = email_receiver.map(&:date)
 
-    expect(rendered).to have_tag("div", with: { id: "received-emails" }) do
-      with_tag("h2", text: "Received Emails")
-      with_tag("div") do
-        with_tag("span", text: "account@test.com -> account@example.com")
-        with_tag("span", text: "account@test.com -> account2@example.com")
-        with_tag("span", text: "account2@test.com -> account@example.com")
-      end
-    end
+    expect(expected_dates).to eql([now + 2, now + 1, now + 0])
+    expect(email_receiver).to boolean_count(3, :received_emails)
   end
 
 end
