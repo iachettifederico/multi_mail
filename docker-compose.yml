@@ -1,0 +1,50 @@
+---
+version: "3.7"
+
+x-build-common: &build-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+    target: development
+
+x-app-common: &app-common
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  stdin_open: true
+  tty: true
+  # entrypoint: script/docker-entrypoint-development.sh
+  volumes:
+    - .:/app
+    - bundler:/bundler
+
+services:
+  web:
+    <<: [*build-common, *app-common]
+    depends_on:
+      - database
+    command: bundle exec rails s -b 0.0.0.0
+    ports:
+      - "3000:3000"
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+  mailer:
+    image: mailhog/mailhog
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /home/mailhog
+    ports:
+      - '8025:8025'
+    volumes:
+      - mailhog:/home/mailhog
+
+volumes:
+  bundler:
+  mailhog:
+  pg-data:
