@@ -246,7 +246,7 @@ DEPENDENCIES
   awesome_print (~> 1.9.2)
   debug (~> 1.8.0)
   dotenv-rails (~> 2.8.1)
-  image_processing (~> 1.12.2)
+  image_processing
   pg (~> 1.5.3)
   phlex-rails (~> 1.0.0)
   propshaft (~> 0.7.0)
