@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class EmailsRepository
+  attr_reader :emails
+
   def self.load(emails: InboundEmail.all)
     new(emails: map_emails(emails))
   end
 
   private
-
-  attr_reader :emails
 
   def initialize(emails:)
     @emails = emails

@@ -4,7 +4,7 @@ class MainMailbox < ApplicationMailbox
       from:       mail.from.first,
       to:         mail.to.first,
       subject:    mail.subject.to_s,
-      raw_body:   mail.body.to_s,
+      body:   mail.body.to_s,
       date:       mail.date.to_datetime,
       message_id: mail.message_id,
     )

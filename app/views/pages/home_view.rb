@@ -2,15 +2,14 @@
 
 module Pages
   class HomeView < ApplicationView
+    def initialize(inbox:)
+      @inbox = inbox
+    end
+
     def template
       h1 { "Home Page" }
 
-      h1 {InboundEmail.all.count}
-      InboundEmail.all.each do |inbound_email|
-        div(class: "m-3 p-2") {
-          p { inbound_email.attributes.inspect }
-        }
-      end
+      render InboxListComponent.new(name: "All emails", inbox: @inbox)
     end
   end
 end

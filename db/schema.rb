@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_214628) do
     t.string "from", null: false
     t.string "to", null: false
     t.string "subject", null: false
-    t.text "raw_body", null: false
+    t.text "body", null: false
     t.string "message_id", null: false
     t.datetime "date", null: false
     t.datetime "created_at", null: false
