@@ -4,7 +4,7 @@ class CreateInboundEmails < ActiveRecord::Migration[7.0]
       t.string :from,       null: false
       t.string :to,         null: false
       t.string :subject,    null: false
-      t.text   :raw_body,   null: false
+      t.text   :body,       null: false
       t.string :message_id, null: false
       t.datetime :date,     null: false
 
