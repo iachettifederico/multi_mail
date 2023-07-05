@@ -1,0 +1,2 @@
+class InboundEmail < ApplicationRecord
+end
