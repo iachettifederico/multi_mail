@@ -22,10 +22,17 @@ services:
     <<: [*build-common, *app-common]
     depends_on:
       - database
+      - tailwind
     command: bundle exec rails s -b 0.0.0.0
     ports:
       - "3000:3000"
 
+  tailwind:
+    <<: [*build-common, *app-common]
+#    depends_on:
+#      - database
+    command: bundle exec bin/rails tailwindcss:watch
+ 
   database:
     image: postgres:latest
     environment:

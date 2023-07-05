@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main {
+  @apply m-auto p-4 max-w-6xl;
+}
+
+h1 {
+  @apply py-4 text-2xl font-semibold;
+}
+
+h2 {
+  @apply mt-16 py-3 text-xl font-semibold;
+}
+
+h3 {
+  @apply mt-16 py-3 text-lg font-semibold;
+}
+
+p {
+  @apply my-3 leading-loose text-gray-900;
+}
+
+ul {
+  @apply ml-4;
+}
+
+li {
+  @apply ml-4 list-[circle];
+}
+
+dl {
+  @apply flex flex-wrap;
+}
+
+dl dt {
+  @apply w-1/4 flex justify-end pr-2;
+}
+
+dl dd {
+  @apply w-3/4 m-0 font-semibold hover:italic;
+}
+
+strong {
+  @apply text-blue-800;
+}
+
+strong a {
+  @apply text-blue-800 hover:italic;
+}
+
+blockquote {
+  @apply m-4 px-8 py-4 text-gray-800 bg-gray-100 italic rounded-lg shadow;
+}
