@@ -3,7 +3,7 @@
 class ApplicationLayout < ApplicationView
   include Phlex::Rails::Layout
 
-  def template(&block)
+  def template(&)
     doctype
 
     html do
@@ -21,10 +21,9 @@ class ApplicationLayout < ApplicationView
       end
 
       body do
-        
         render NavBarComponent.new
-        
-        main(&block)
+
+        main(&)
       end
     end
   end

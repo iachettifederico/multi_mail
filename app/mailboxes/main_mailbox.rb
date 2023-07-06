@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class MainMailbox < ApplicationMailbox
-  def process
+  def process # rubocop:disable Metrics/AbcSize
     InboundEmail.create!(
       from:       mail.from.first,
       to:         mail.to.first,
       subject:    mail.subject.to_s,
-      body:   mail.body.to_s,
+      body:       mail.body.to_s,
       date:       mail.date.to_datetime,
       message_id: mail.message_id,
     )

@@ -5,9 +5,7 @@ class Inbox
     new(email_repository: email_repository)
   end
 
-  def emails
-    email_repository.emails
-  end
+  delegate :emails, to: :email_repository
 
   private
 

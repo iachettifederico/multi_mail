@@ -33,5 +33,4 @@ class NavBarItemComponent < ApplicationComponent
       "Conductor" => rails_conductor_inbound_emails_path,
     }
   end
-
 end

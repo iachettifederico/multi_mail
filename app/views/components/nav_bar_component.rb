@@ -28,5 +28,4 @@ class NavBarComponent < ApplicationComponent
       NavBarItemComponent.new(text: "Conductor", url: rails_conductor_inbound_emails_path, target: "_blank")
     ]
   end
-
 end

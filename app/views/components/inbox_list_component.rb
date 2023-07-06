@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InboxListComponent < ApplicationComponent
-  def initialize(name: "*Inbox*", inbox: )
+  def initialize(name: "*Inbox*", inbox:)
     @name = name
     @inbox = inbox
   end
@@ -10,7 +10,7 @@ class InboxListComponent < ApplicationComponent
     div(class: "p-4 border border-2 border-blue-200") {
       h2(class: "m-0 border-b-2  border-blue-100") { name }
       emails.each do |email|
-        div() {
+        div {
           span { email.from }
           span { " => " }
           span { email.to }
