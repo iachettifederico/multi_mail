@@ -12,6 +12,34 @@ class Email
     new(from: from, to: to, subject: subject, body: body, message_id: message_id, date: date)
   end
 
+  def self.not_found
+    NotFound.new
+  end
+
+  def message_id?(potential_message_id)
+    message_id.to_s == potential_message_id.to_s
+  end
+
+  def found?
+    true
+  end
+
+  def found(&block)
+    block.call
+  end
+
+  def not_found
+  end
+
+  def ==(other)
+    from == other.from       &&
+      to == other.to         &&
+      subject == other.subject    &&
+      body == other.body       &&
+      message_id.to_s == other.message_id.to_s &&
+      date == other.date
+  end
+
   private
 
   def initialize(from:, to:, subject:, body:, message_id:, date:)
@@ -19,7 +47,27 @@ class Email
     @to         = to
     @subject    = subject
     @body       = body
-    @message_id = message_id
+    @message_id = message_id.to_s
     @date       = date
+  end
+
+  class NotFound
+    def found?
+      false
+    end
+
+    def found
+    end
+
+    def not_found(&block)
+      block.call
+    end
+    
+    def from; "" end
+    def to; "" end
+    def subject; "" end
+    def body; "" end
+    def message_id; "" end
+    def date; "" end
   end
 end
