@@ -16,21 +16,4 @@ class NavBarItemComponent < ApplicationComponent
       a(href: url, target: target) { text }
     end
   end
-
-  private
-
-  def items
-    {
-      "tete" => "/",
-      **development_items,
-    }
-  end
-
-  def development_items
-    return {} unless Rails.env.development?
-
-    {
-      "Conductor" => rails_conductor_inbound_emails_path,
-    }
-  end
 end
