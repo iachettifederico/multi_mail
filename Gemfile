@@ -11,6 +11,7 @@ gem "rails", "~> 7.0.7"
 
 gem "awesome_print", "~> 1.9.2"
 gem "image_processing", "~> 1.12.2"
+gem "importmap-rails", "~> 1.2.1"
 gem "pg", "~> 1.5.3"
 gem "phlex-rails", "~> 1.0.0"
 gem "propshaft", "~> 0.7.0"
@@ -29,5 +30,3 @@ group :development do
   gem "rubocop-rails", "~> 2.20.2"
   gem "rubocop-rake", "~> 0.6.0"
 end
-
-gem "importmap-rails", "~> 1.2.1"
