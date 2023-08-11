@@ -28,7 +28,6 @@ group :development do
   gem "rubocop", "~> 1.54.2"
   gem "rubocop-rails", "~> 2.20.2"
   gem "rubocop-rake", "~> 0.6.0"
-  gem "rubocop-rspec", "~> 2.22.0"
 end
 
 gem "importmap-rails", "~> 1.2.1"
