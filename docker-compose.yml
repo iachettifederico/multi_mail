@@ -29,8 +29,6 @@ services:
 
   tailwind:
     <<: [*build-common, *app-common]
-#    depends_on:
-#      - database
     command: bundle exec bin/rails tailwindcss:watch
  
   database:
