@@ -28,14 +28,13 @@ class Email
     block.call
   end
 
-  def not_found
-  end
+  def not_found; end
 
   def ==(other)
     from == other.from       &&
       to == other.to         &&
-      subject == other.subject    &&
-      body == other.body       &&
+      subject == other.subject &&
+      body == other.body &&
       message_id.to_s == other.message_id.to_s &&
       date == other.date
   end
@@ -56,18 +55,17 @@ class Email
       false
     end
 
-    def found
-    end
+    def found; end
 
     def not_found(&block)
       block.call
     end
-    
-    def from; "" end
-    def to; "" end
-    def subject; "" end
-    def body; "" end
-    def message_id; "" end
-    def date; "" end
+
+    def from = ""
+    def to = ""
+    def subject = ""
+    def body = ""
+    def message_id = ""
+    def date = ""
   end
 end

@@ -1,72 +1,95 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "rspec-given"
 
 RSpec.describe "Inbox" do
-  let(:factory) { Factories::Emails.new }
+  Given(:factory) { Factories::Emails.new }
+  Given(:email_repository) { EmailRepository.load(emails: emails) }
 
-  it "starts empty" do
-    email_repository = EmailRepository.load(emails: [])
+  When(:inbox) { Inbox.load(email_repository: email_repository) }
 
-    inbox = Inbox.load(email_repository: email_repository)
+  context "when there are NO emails" do
+    Given(:emails) { [] }
 
-    expect(inbox.emails).to eq([])
-    expect(inbox.empty?).to be(true)
-    expect(inbox.number_of_emails).to eq(0)
+
+    Then { inbox.emails == [] }
+    And { inbox.empty? == true }
+    And { inbox.number_of_emails == 0 }
   end
 
-  it "lists one email" do
-    email = factory.new_email
-    email_repository = EmailRepository.load(emails: [email])
+  context "when there are emails" do
+    context "when there is only one email" do
+      Given(:email) { factory.new_email }
+      Given(:emails) { [email] }
 
-    inbox = Inbox.load(email_repository: email_repository)
+      Then { inbox.emails == [email] }
+      And { inbox.empty? == false }
+      And { inbox.number_of_emails == 1 }
+    end
 
-    expect(inbox.emails).to eq([email])
-    expect(inbox.empty?).to be(false)
-    expect(inbox.number_of_emails).to eq(1)
+    context "when there are multiple emails" do
+      Given(:first_email)  { factory.new_email }
+      Given(:second_email) { factory.new_email }
+      Given(:third_email ) { factory.new_email }
+      Given(:emails) { [first_email, second_email, third_email] }
+
+      Then { inbox.emails == [first_email, second_email, third_email] }
+      And { inbox.empty? == false }
+      And { inbox.number_of_emails == 3 }
+    end
+
+    describe "finding emails" do
+      Given(:email_to_find) { factory.new_email(message_id: 15) }
+      Given(:emails) { [factory.new_email, email_to_find, factory.new_email] }
+
+      context "when found" do
+        When(:found_email) { inbox.find_by_message_id("15") }
+        
+        describe "return value" do
+          Then { found_email.found? == true }
+        end
+
+        describe "callbacks" do
+          When(:found) {
+            found_email.found do
+              raise "Found"
+            end
+          }
+          When(:not_found) {
+            found_email.not_found do
+              raise "Not Found"
+            end
+          }
+
+          Then { found == Failure(RuntimeError, "Found") }
+          And { not_found != Failure() }
+        end
+      end
+
+      context "when NOT found" do
+        When(:found_email) { inbox.find_by_message_id("1000") }
+        
+        describe "return value" do
+          Then { found_email.found? == false }
+        end
+
+        describe "callbacks" do
+          When(:found) {
+            found_email.found do
+              raise "Found"
+            end
+          }
+          When(:not_found) {
+            found_email.not_found do
+              raise "Not Found"
+            end
+          }
+
+          Then { not_found == Failure(RuntimeError, "Not Found") }
+          And { found != Failure() }
+        end
+      end
+    end
   end
-
-  it "lists multiple email" do
-    first_email  = factory.new_email
-    second_email = factory.new_email
-    third_email  = factory.new_email
-    email_repository = EmailRepository.load(emails: [first_email, second_email, third_email])
-
-    inbox = Inbox.load(email_repository: email_repository)
-
-    expect(inbox.emails).to eq([first_email, second_email, third_email])
-    expect(inbox.empty?).to be(false)
-    expect(inbox.number_of_emails).to eq(3)
-  end
-
-  it "returns an email from the email id" do
-    email = factory.new_email(message_id: 15)
-    email_repository = EmailRepository.load(emails: [factory.new_email, email, factory.new_email])
-
-    inbox = Inbox.load(email_repository: email_repository)
-
-    email = inbox.find_by_message_id("15")
-
-    expect(email.found?).to be(true)
-    expect(email.message_id).to eq("15")
-    email.found { @found = true }
-    email.not_found { raise }
-    expect(@found).to be(true)
-  end
-
-  it "returns an email null object if the email wasn't found" do
-    email = factory.new_email(message_id: 15)
-    email_repository = EmailRepository.load(emails: [factory.new_email, email, factory.new_email])
-
-    inbox = Inbox.load(email_repository: email_repository)
-
-    email = inbox.find_by_message_id("not found")
-
-    expect(email.found?).to be(false)
-    expect(email.message_id).to eq("")
-    email.found { raise }
-    email.not_found { @found = false }
-    expect(@found).to be(false)
-  end
-
 end
